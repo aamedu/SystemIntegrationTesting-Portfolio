@@ -1,0 +1,48 @@
+markdown
+# Bug Analysis: Duplicate Todo Items
+
+## Steps to Reproduce
+
+1. **Launch the App:**  
+   Start the demo application using `npm run dev` and navigate to the app's homepage.
+
+2. **Log In:**  
+   Go to the `/login` page and log in using the fake login form.
+
+3. **Navigate to the Todo List:**  
+   After successful login, arrive at the Todo page where the input form and list are visible.
+
+4. **Create a Todo Item:**  
+   Enter a valid todo text (e.g., "Test Todo") in the input field.
+
+5. **Rapid Submission:**  
+   Quickly click the "Add" button multiple times (or double-click) before the UI can update or the input is cleared.
+
+6. **Observe the Result:**  
+   Notice that the same todo item appears more than once in the list – indicating that duplicate items are being created.
+
+## Root Cause Hypothesis
+
+The most likely root cause is a **race condition** in the `addTodo` method of the `Todo.vue` component. The component does not guard against rapid, repeated clicks. Without debouncing or temporarily disabling the "Add" button after the first click, multiple invocations of the add action can occur before the UI update (especially in a fast or flakey environment). This causes the same input to be processed repeatedly, leading to duplicate entries in the todos list.
+
+## How to Prevent Regression
+
+1. **Implement Debounce/Throttle Logic:**  
+   - Add debounce functionality to the add action. This will ensure that quick, successive clicks are treated as a single submission.
+   - Alternatively, disable the "Add" button once it is clicked (until the action completes and the UI updates), preventing multiple submissions.
+
+2. **Input Validation and Duplicate Check:**  
+   - Enhance the `addTodo` method by checking whether the input value already exists in the todos list. This extra validation can reject duplicate entries.
+   - Ensure the input validation is comprehensive enough to reject submissions of blank or whitespace-only strings and exact duplicate entries.
+
+3. **Add Automated Tests:**  
+   - **Unit Test:**  
+     Write a unit test to simulate rapid button clicks and assert that only one todo item is added.
+   - **E2E Test:**  
+     Extend the existing Playwright E2E tests to simulate fast clicking on the "Add" button and verify that duplicate items are not inserted.
+   - Integrate these tests in the CI pipeline so any future code changes do not reintroduce this bug.
+
+By taking these measures, the likelihood of duplicate todo items appearing will be minimized, and this issue can be caught or prevented in future iterations.
+
+Additional Thoughts
+Addressing the duplications early with both code changes and comprehensive testing ensures not only that this bug is fixed, but also that similar issues are prevented in the future. The incorporation of debounce logic and appropriate unit/E2E tests will provide a solid safety net during further development and regression cycles.

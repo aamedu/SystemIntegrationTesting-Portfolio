@@ -1,0 +1,69 @@
+Test Plan for Todo.vue Component
+Overview
+The Todo component is a simple Vue.js input form that allows users to add and delete todo items. It includes built-in validation to prevent adding empty todos. Testing this component is critical because it verifies core user interactions that directly affect the application’s usability.
+Testing Strategy:
+* Unit Tests: Focus on individual functions such as the add and delete methods, as well as input validation and any computed properties or watchers. Unit tests catch logical errors in the component's code.
+* Integration Tests: Ensure that the Todo component integrates well within the overall Vue.js application. These tests verify data binding and interaction between sub-components if any exist.
+* End-to-End (E2E) Tests: Simulate real user behavior from entering a new todo to deleting one. E2E tests validate the flow of the application, ensuring that the UI, business logic, and (if applicable) backend services work together seamlessly.
+Test Priorities:
+1. High Priority:
+o Validation and add/delete functionality (Unit tests) to ensure the basic business logic is sound.
+o Critical user workflows (E2E tests) that mimic a real user’s journey through the application.
+2. Medium Priority:
+o Integration testing to verify that the Todo component interacts correctly with other parts of the system.
+
+
+
+
+
+
+
+Detailed Test Cases
+Test Case 1: Add a Valid Todo
+* Description: Verify that entering a valid todo item correctly adds it to the list.
+* Preconditions:
+o The Todo component is loaded.
+o The todo list is initially empty.
+* Steps to Reproduce:
+1. Navigate to the Todo component.
+2. Enter a valid todo item (e.g., "Buy milk") in the input field.
+3. Click the "Add" button.
+* Expected Result: The todo list updates to display the new entry "Buy milk".
+Test Case 2: Validate Input Field – Empty Submission
+* Description: Ensure that the form does not allow adding an empty todo item.
+* Preconditions:
+o The Todo component is rendered with a visible input field.
+* Steps to Reproduce:
+1. Navigate to the Todo component.
+2. Leave the input field empty.
+3. Click the "Add" button.
+* Expected Result: A validation error message is displayed (e.g., “Input cannot be empty”), and no new todo is added to the list.
+Test Case 3: Delete a Todo Item
+* Description: Confirm that an existing todo item can be removed from the list.
+* Preconditions:
+o At least one todo item exists in the list (e.g., "Buy milk" is already added).
+* Steps to Reproduce:
+1. Identify the todo item "Buy milk" in the list.
+2. Click the delete button associated with that item.
+* Expected Result: The todo item "Buy milk" is removed from the list, and the UI updates accordingly.
+Test Case 4: Add Multiple Todos Sequentially
+* Description: Verify that multiple todos can be added one after the other and that they appear in the correct order.
+* Preconditions:
+o The Todo component is loaded with an empty or initial todo list.
+* Steps to Reproduce:
+1. Enter "Buy milk" in the input field and click "Add".
+2. Enter "Walk the dog" in the input field and click "Add".
+3. Enter "Call mom" in the input field and click "Add".
+* Expected Result: The todo list displays all three items in the order they were added: "Buy milk", "Walk the dog", and "Call mom".
+Test Case 5: Rapid Addition of Todos
+* Description: Test how the component handles multiple add operations performed in rapid succession.
+* Preconditions:
+o The Todo component is displayed and ready for interaction.
+o The input field is active.
+* Steps to Reproduce:
+1. Quickly enter and submit several todo items (e.g., "Task 1", "Task 2", "Task 3") one after the other without any delays.
+2. For each entry, press the "Add" button immediately after typing the todo text.
+* Expected Result: All todo items are added correctly without errors. The list should reflect all tasks in the order they were added, ensuring that no submissions are lost or duplicated.
+This test plan offers clear guidance for both automated tests (unit, integration, and E2E) and manual testing procedures, ensuring the reliability and usability of the Todo feature within the application.
+Beyond these cases, consider potential edge conditions like handling whitespace-only inputs or duplicate entries. Understanding how the component behaves under such conditions can further enrich your testing scope and help prevent unexpected bugs in production.
+
